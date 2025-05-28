@@ -1,7 +1,7 @@
-package go_cheezeepay
+package go_tcpay
 
 import (
-	"github.com/asaka1234/go-cheezeepay/utils"
+	"github.com/asaka1234/go-tcpay/utils"
 	"github.com/go-resty/resty/v2"
 )
 

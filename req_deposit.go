@@ -1,4 +1,4 @@
-package go_cheezeepay
+package go_tcpay
 
 import (
 	"crypto/tls"
