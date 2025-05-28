@@ -4,13 +4,13 @@ import (
 	"crypto"
 	"crypto/rsa"
 	"crypto/sha256"
-	"crypto/x509"
 	"encoding/base64"
 	"encoding/hex"
-	"encoding/pem"
-	"errors"
+	"encoding/xml"
 	"fmt"
+	"github.com/shopspring/decimal"
 	"github.com/spf13/cast"
+	"math/big"
 	"strings"
 )
 
@@ -18,7 +18,7 @@ type TCPayRSASignatureUtil struct{}
 
 // category = 1 是: 下单接口
 // category = 2 是: 验证接口
-func (util *TCPayRSASignatureUtil) GetSign(paramsMap map[string]interface{}, privateKey string, category int) (string, error) {
+func (util *TCPayRSASignatureUtil) GetSign(paramsMap map[string]interface{}, privateKeyXML string, category int) (string, error) {
 	delete(paramsMap, "SignData")
 
 	var textContent string
@@ -31,10 +31,19 @@ func (util *TCPayRSASignatureUtil) GetSign(paramsMap map[string]interface{}, pri
 		textContent = util.GetVerifyPaymentContent(paramsMap)
 	}
 
+	fmt.Printf("=1=>raw: %s\n", textContent)
+
 	//2. 做sha256 hash
 	sha256Data := util.ToSHA256(textContent)
+
+	fmt.Printf("=2=>sha256: %s\n", sha256Data)
+
 	//3. 用私钥签名
-	return util.SignData(2048, privateKey, sha256Data)
+	signStr, err := util.SignData(2048, privateKeyXML, sha256Data)
+
+	fmt.Printf("=3=>sign: %s\n", signStr)
+
+	return signStr, err
 
 }
 
@@ -51,7 +60,6 @@ func (util *TCPayRSASignatureUtil) VerifySign(paramsMap map[string]interface{}, 
 func (util *TCPayRSASignatureUtil) GetCreatePaymentContent(paramsMap map[string]interface{}) string {
 
 	//MerchantId#TerminalId#Action#Amount#InvoiceNumber#LocalDateTime#ReturnUrl#AdditionalData#ConsumerId
-
 	params := ConvertToStringMap(paramsMap)
 
 	var builder strings.Builder
@@ -61,7 +69,8 @@ func (util *TCPayRSASignatureUtil) GetCreatePaymentContent(paramsMap map[string]
 	builder.WriteString("#")
 	builder.WriteString(params["Action"])
 	builder.WriteString("#")
-	fmt.Fprintf(&builder, "%.2f#", params["Amount"])
+	builder.WriteString(decimal.NewFromFloat(cast.ToFloat64(paramsMap["Amount"])).StringFixed(2))
+	builder.WriteString("#")
 	builder.WriteString(params["InvoiceNumber"])
 	builder.WriteString("#")
 	builder.WriteString(params["LocalDateTime"])
@@ -100,18 +109,10 @@ func (util *TCPayRSASignatureUtil) ToSHA256(input string) string {
 // keySize - 密钥大小（如2048）
 // privateKey - PEM格式的私钥
 // stringToBeSigned - 要签名的字符串
-func (util *TCPayRSASignatureUtil) SignData(keySize int, privateKey string, stringToBeSigned string) (string, error) {
+func (util *TCPayRSASignatureUtil) SignData(keySize int, privateKeyXML string, stringToBeSigned string) (string, error) {
 	// 解析PEM格式的私钥
-	block, _ := pem.Decode([]byte(privateKey))
-	if block == nil {
-		return "", errors.New("failed to parse PEM block containing the private key")
-	}
 
-	// 解析私钥
-	privKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-	if err != nil {
-		return "", fmt.Errorf("failed to parse private key: %v", err)
-	}
+	privKey := ParseRSAPrivateKeyXML(privateKeyXML)
 
 	// 检查密钥大小是否匹配
 	if privKey.Size()*8 != keySize {
@@ -129,4 +130,60 @@ func (util *TCPayRSASignatureUtil) SignData(keySize int, privateKey string, stri
 
 	// 返回Base64编码的签名
 	return base64.StdEncoding.EncodeToString(signature), nil
+}
+
+//------------
+
+type RSAKeyValue struct {
+	XMLName  xml.Name `xml:"RSAKeyValue"`
+	Modulus  string   `xml:"Modulus"`
+	Exponent string   `xml:"Exponent"`
+	P        string   `xml:"P"`
+	Q        string   `xml:"Q"`
+	DP       string   `xml:"DP"`
+	DQ       string   `xml:"DQ"`
+	InverseQ string   `xml:"InverseQ"`
+	D        string   `xml:"D"`
+}
+
+// 解析xml格式的私钥
+func ParseRSAPrivateKeyXML(privateKeyXmlData string) *rsa.PrivateKey {
+	var key RSAKeyValue
+	err := xml.Unmarshal([]byte(privateKeyXmlData), &key)
+	if err != nil {
+		panic(fmt.Sprintf("Failed to parse XML: %v", err))
+	}
+
+	// 解码所有Base64编码的组件
+	modulus, _ := base64.StdEncoding.DecodeString(key.Modulus)
+	exponent, _ := base64.StdEncoding.DecodeString(key.Exponent)
+	p, _ := base64.StdEncoding.DecodeString(key.P)
+	q, _ := base64.StdEncoding.DecodeString(key.Q)
+	dp, _ := base64.StdEncoding.DecodeString(key.DP)
+	dq, _ := base64.StdEncoding.DecodeString(key.DQ)
+	qi, _ := base64.StdEncoding.DecodeString(key.InverseQ)
+	d, _ := base64.StdEncoding.DecodeString(key.D)
+
+	// 创建RSA私钥
+	privateKey := &rsa.PrivateKey{
+		PublicKey: rsa.PublicKey{
+			N: new(big.Int).SetBytes(modulus),
+			E: int(new(big.Int).SetBytes(exponent).Int64()),
+		},
+		D:      new(big.Int).SetBytes(d),
+		Primes: []*big.Int{new(big.Int).SetBytes(p), new(big.Int).SetBytes(q)},
+		Precomputed: rsa.PrecomputedValues{
+			Dp:   new(big.Int).SetBytes(dp),
+			Dq:   new(big.Int).SetBytes(dq),
+			Qinv: new(big.Int).SetBytes(qi),
+		},
+	}
+
+	// 验证私钥有效性
+	err = privateKey.Validate()
+	if err != nil {
+		panic(fmt.Sprintf("Invalid private key: %v", err))
+	}
+
+	return privateKey
 }

@@ -8,7 +8,7 @@ import (
 type Client struct {
 	MerchantID    string // merchantId
 	TerminalID    string
-	RSAPublicKey  string // 公钥
+	RSAPublicKey  string // 公钥(貌似没用到)
 	RSAPrivateKey string // 私钥
 
 	GatewayURL          string //带token跳转地址

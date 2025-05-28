@@ -15,6 +15,7 @@ func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespon
 	// 1. 拿到请求参数，转为map
 	var signDataMap map[string]interface{}
 	mapstructure.Decode(req, &signDataMap)
+	signDataMap["Amount"] = cli.MerchantID
 	signDataMap["MerchantId"] = cli.MerchantID
 	signDataMap["TerminalId"] = cli.TerminalID
 	signDataMap["LocalDateTime"] = time.Now().Format("2006/01/02 15:04:05")
@@ -25,7 +26,10 @@ func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespon
 	signDataMap["AdditionalData"], _ = utils.SignCallback(signDataMap, cli.RSAPrivateKey)
 
 	// 2. 计算签名,补充参数
-	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.RSAPrivateKey, 1) //私钥加密
+	signStr, err := cli.signUtil.GetSign(signDataMap, cli.RSAPrivateKey, 1) //私钥加密
+	if err != nil {
+		return nil, err
+	}
 	signDataMap["SignData"] = signStr
 
 	fmt.Printf("sign: %s\n", signStr)
