@@ -5,16 +5,16 @@ import "time"
 // ---------------------------------------------
 // create payment
 type TCPayCreatePaymentReq struct {
-	Action        int     `json:"Action" mapstructure:"Action"` // 50-deposit, 100-withdrawl
 	ConsumerId    string  `json:"ConsumerId,omitempty" mapstructure:"ConsumerId"`
 	Amount        float64 `json:"Amount" mapstructure:"Amount"`               // 要求:必须2位精度!! 哪怕是整数,也要1.00这样
 	InvoiceNumber int64   `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
-	ReturnUrl     string  `json:"ReturnUrl" mapstructure:"ReturnUrl"`         //是ajax callback地址
-	//AdditionalData string  `json:"additionalData,omitempty" mapstructure:"additionalData"` //option
 	//以下sdk来设置
 	//MerchantId    int    `json:"MerchantId" mapstructure:"MerchantId"`       //商户号
 	//TerminalId    int    `json:"TerminalId" mapstructure:"TerminalId"`       //终端号
 	//LocalDateTime string `json:"LocalDateTime" mapstructure:"LocalDateTime"` //yyyy/MM/dd HH:mm:ss
+	//AdditionalData string  `json:"additionalData,omitempty" mapstructure:"additionalData"` //option  备注信息,用来做一个简单签名,解决callback没有鉴权的问题. Additional transaction information
+	//Action        int     `json:"Action" mapstructure:"Action"` // 50-deposit, 100-withdrawl
+	//ReturnUrl     string  `json:"ReturnUrl" mapstructure:"ReturnUrl"`         //是ajax callback地址
 	//SignData      string `json:"SignData" mapstructure:"SignData"`           //签名数据
 }
 
@@ -43,11 +43,11 @@ type TCPayCreatePaymentBackReqData struct {
 	MerchantId     int64   `json:"MerchantId" mapstructure:"MerchantId"`
 	TerminalId     int64   `json:"TerminalId" mapstructure:"TerminalId"`
 	Amount         float64 `json:"Amount" mapstructure:"Amount"`
-	Action         int64   `json:"Action" mapstructure:"Action"`
-	InvoiceNumber  int64   `json:"InvoiceNumber" mapstructure:"InvoiceNumber"`
-	TransactionId  int64   `json:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有
+	Action         int64   `json:"Action" mapstructure:"Action"`               // 50-deposit, 100-withdrawl
+	InvoiceNumber  int64   `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
+	TransactionId  int64   `json:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
 	Token          string  `json:"token" mapstructure:"token"`
-	AdditionalData string  `json:"AdditionalData,omitempty" mapstructure:"AdditionalData"`
+	AdditionalData string  `json:"AdditionalData,omitempty" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
 }
 
 //=====================最终确认=========================

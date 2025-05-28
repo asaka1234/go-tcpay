@@ -3,31 +3,34 @@ package go_tcpay
 import (
 	"crypto/tls"
 	"fmt"
+	"github.com/asaka1234/go-tcpay/utils"
 	"github.com/mitchellh/mapstructure"
+	"time"
 )
 
-// https://pay-apidoc-en.cheezeebit.com/#p2p-payin-order
-func (cli *Client) Deposit(req CheezeePayDepositReq) (*CheezeePayDepositResponse, error) {
+func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentResponse, error) {
 
-	rawURL := cli.DepositURL
+	rawURL := cli.CreatePaymentURL
 
 	// 1. 拿到请求参数，转为map
 	var signDataMap map[string]interface{}
 	mapstructure.Decode(req, &signDataMap)
-	signDataMap["merchantsId"] = cli.MerchantID
-	signDataMap["pushAddress"] = cli.DepositCallbackURL
-	signDataMap["takerType"] = "2"
-	signDataMap["coin"] = "USDT"
-	signDataMap["tradeType"] = "2"
-	signDataMap["language"] = "en"
+	signDataMap["MerchantId"] = cli.MerchantID
+	signDataMap["TerminalId"] = cli.TerminalID
+	signDataMap["LocalDateTime"] = time.Now().Format("2006/01/02 15:04:05")
+	signDataMap["Action"] = 50 //50-deposit
+	signDataMap["ReturnUrl"] = cli.DepositCallbackURL
+
+	// 2. 先计算一个md5签名, 随后补充到AdditionalData字段中.
+	signDataMap["AdditionalData"], _ = utils.SignCallback(signDataMap, cli.RSAPublicKey)
 
 	// 2. 计算签名,补充参数
-	signStr, _ := cli.rsaUtil.GetSign(signDataMap, cli.RSAPrivateKey) //私钥加密
-	signDataMap["platSign"] = signStr
+	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.RSAPrivateKey, 1) //私钥加密
+	signDataMap["SignData"] = signStr
 
 	fmt.Printf("sign: %s\n", signStr)
 
-	var result CheezeePayDepositResponse
+	var result TCPayCreatePaymentResponse
 
 	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
@@ -42,20 +45,6 @@ func (cli *Client) Deposit(req CheezeePayDepositReq) (*CheezeePayDepositResponse
 
 	if err != nil {
 		return nil, err
-	}
-
-	//验证签名
-	if result.Code == "000000" {
-		sign := result.PlatSign //收到的签名
-
-		var signResultMap map[string]interface{}
-		mapstructure.Decode(result, &signResultMap)
-		delete(signResultMap, "platSign") //去掉，用余下的来计算签名
-
-		verify, _ := cli.rsaUtil.VerifySign(signResultMap, cli.RSAPublicKey, sign) //公钥解密
-		if !verify {
-			return nil, fmt.Errorf("sign verify failed")
-		}
 	}
 
 	return &result, nil

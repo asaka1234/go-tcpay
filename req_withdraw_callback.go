@@ -2,23 +2,40 @@ package go_tcpay
 
 import (
 	"fmt"
+	"github.com/asaka1234/go-tcpay/utils"
 	"github.com/mitchellh/mapstructure"
+	"github.com/spf13/cast"
 )
 
-// https://pay-apidoc-en.cheezeebit.com/#p2p-payout-notification
-func (cli *Client) WithdrawCallback(req CheezeePayWithdrawBackReq, processor func(CheezeePayWithdrawBackReq) error) error {
-	//验证签名
-	sign := req.PlatSign //收到的签名
+func (cli *Client) WithdrawCallback(req TCPayCreatePaymentBackReq, processor func(TCPayCreatePaymentBackReq) error) error {
+	//1. 验证签名
+	if req.ResCode == 0 {
+		var signDataMap map[string]interface{}
+		mapstructure.Decode(req.Data, &signDataMap)
 
-	var signResultMap map[string]interface{}
-	mapstructure.Decode(req, &signResultMap)
-	delete(signResultMap, "platSign") //去掉，用余下的来计算签名
+		verifyResult, err := utils.VerifyCallback(signDataMap, cli.RSAPublicKey)
+		if err != nil || !verifyResult {
+			return fmt.Errorf("illegal callback!")
+		}
 
-	verify, _ := cli.rsaUtil.VerifySign(signResultMap, cli.RSAPublicKey, sign) //私钥加密
-	if !verify {
-		return fmt.Errorf("sign verify failed")
+		if cast.ToString(req.Data.MerchantId) != cli.MerchantID || cast.ToString(req.Data.TerminalId) != cli.TerminalID {
+			return fmt.Errorf("illegal merchantID!")
+		}
+
+		if req.Data.Action != 100 {
+			return fmt.Errorf("illegal action!")
+		}
 	}
 
-	//开始处理
-	return processor(req)
+	//2. 业务侧开始处理
+	err := processor(req)
+	if err != nil {
+		return err
+	}
+
+	//3. 最后去confirm
+	verifyReq := TCPayVerifyPaymentReq{
+		Token: req.Data.Token,
+	}
+	return cli.VerifyPayment(verifyReq)
 }

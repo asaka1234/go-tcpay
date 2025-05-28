@@ -1,24 +1,69 @@
 package go_tcpay
 
 import (
+	"crypto/tls"
 	"fmt"
+	"github.com/asaka1234/go-tcpay/utils"
 	"github.com/mitchellh/mapstructure"
+	"github.com/spf13/cast"
 )
 
-// https://pay-apidoc-en.cheezeebit.com/#p2p-payin-notification
-func (cli *Client) DepositCallback(req CheezeePayDepositBackReq, processor func(CheezeePayDepositBackReq) error) error {
-	//验证签名
-	sign := req.PlatSign //收到的签名
+func (cli *Client) DepositCallback(req TCPayCreatePaymentBackReq, processor func(TCPayCreatePaymentBackReq) error) error {
+	//1. 验证签名
+	if req.ResCode == 0 {
+		var signDataMap map[string]interface{}
+		mapstructure.Decode(req.Data, &signDataMap)
 
-	var signResultMap map[string]interface{}
-	mapstructure.Decode(req, &signResultMap)
-	delete(signResultMap, "platSign") //去掉，用余下的来计算签名
+		verifyResult, err := utils.VerifyCallback(signDataMap, cli.RSAPublicKey)
+		if err != nil || !verifyResult {
+			return fmt.Errorf("illegal callback!")
+		}
 
-	verify, _ := cli.rsaUtil.VerifySign(signResultMap, cli.RSAPublicKey, sign) //私钥加密
-	if !verify {
-		return fmt.Errorf("sign verify failed")
+		if cast.ToString(req.Data.MerchantId) != cli.MerchantID || cast.ToString(req.Data.TerminalId) != cli.TerminalID {
+			return fmt.Errorf("illegal merchantID!")
+		}
+
+		if req.Data.Action != 50 {
+			return fmt.Errorf("illegal action!")
+		}
 	}
 
-	//开始处理
-	return processor(req)
+	//2. 业务侧开始处理
+	err := processor(req)
+	if err != nil {
+		return err
+	}
+
+	//3. 最后去confirm
+	verifyReq := TCPayVerifyPaymentReq{
+		Token: req.Data.Token,
+	}
+	return cli.VerifyPayment(verifyReq)
+}
+
+// 收到callback后15分钟内必须发送
+func (cli *Client) VerifyPayment(req TCPayVerifyPaymentReq) error {
+
+	var signDataMap map[string]interface{}
+	mapstructure.Decode(req, &signDataMap)
+
+	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.RSAPrivateKey, 2) //私钥加密
+	signDataMap["SignData"] = signStr
+
+	//---------------------------------
+
+	var result TCPayVerifyPaymentResp
+
+	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
+		SetCloseConnection(true).
+		R().
+		SetBody(signDataMap).
+		SetHeaders(getHeaders()).
+		SetResult(&result).
+		SetError(&result).
+		Post(cli.VerifyPaymentURL)
+
+	fmt.Printf("verify result: %s, %+v\n", string(resp.Body()), result)
+
+	return err
 }

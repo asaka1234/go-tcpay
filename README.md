@@ -1,7 +1,14 @@
 文档
 =============
-https://pay-apidoc-en.cheezeebit.com/#cheezee-pay-api
-只支持INR 和 IDR. 默认 INR
+TopChange.Net
+只支持 IRR (伊朗里亚尔)
+
+整体说明
+=============
+1. 发请pre-order请求, 返回一个token
+2. 随后fe前端带着这个token, Get请求 (https://pg.toppayment.net/Merchant?Token=***  |   https://sandbox.toppayment.net?Token=***) 来打开收银台
+3. 随后用户在收银台地址进行支付
+4. merchant会收到对应的callback回调,收到后：merchant还需要发一个verify请求给psp来最终确认这一笔交易.
 
 鉴权
 ==============
@@ -15,5 +22,5 @@ api中可以指定回调地址, 所以是动态的
 
 Comment
 ===============
-1. only support deposit
+1. 支持 deposit/withdraw
 2. 所有接口都是 application/json 格式的
