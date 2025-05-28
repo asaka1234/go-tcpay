@@ -8,7 +8,7 @@ import (
 func TestDeposit(t *testing.T) {
 
 	//构造client
-	cli := NewClient(nil, MERCHANT_ID, RSA_PUBLIC_KEY, RSA_PRIVATE_KEY, DEPOST_URL, WITHDRAW_URL, DEPOST_BACK_URL, WITHDRAW_BACK_URL)
+	cli := NewClient(nil, MERCHANT_ID, TERMINAL_ID, RSA_PRIVATE_KEY, RSA_PRIVATE_KEY, GARTWAY_URL, CREATE_PAYMENT_URL, VERIFY_PAYMENT_URL, DEPOSIT_CALLBACK_URL, WITHDRAW_CALLBACK_URL)
 
 	//发请求
 	resp, err := cli.Deposit(GenDepositRequestDemo())
@@ -19,11 +19,10 @@ func TestDeposit(t *testing.T) {
 	fmt.Printf("resp:%+v\n", resp)
 }
 
-func GenDepositRequestDemo() CheezeePayDepositReq {
-	return CheezeePayDepositReq{
-		CustomerMerchantsId: "12345", //商户uid
-		LegalCoin:           "INR",
-		MerchantOrderId:     "8787791",
-		DealAmount:          "200", //不能浮点数
+func GenDepositRequestDemo() TCPayCreatePaymentReq {
+	return TCPayCreatePaymentReq{
+		ConsumerId:    "12345", //商户uid
+		InvoiceNumber: 8787791,
+		Amount:        200.00, //不能浮点数
 	}
 }
