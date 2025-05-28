@@ -14,7 +14,7 @@ func (cli *Client) DepositCallback(req TCPayCreatePaymentBackReq, processor func
 		var signDataMap map[string]interface{}
 		mapstructure.Decode(req.Data, &signDataMap)
 
-		verifyResult, err := utils.VerifyCallback(signDataMap, cli.RSAPublicKey)
+		verifyResult, err := utils.VerifyCallback(signDataMap, cli.RSAPrivateKey)
 		if err != nil || !verifyResult {
 			return fmt.Errorf("illegal callback!")
 		}

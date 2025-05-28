@@ -22,7 +22,7 @@ func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespon
 	signDataMap["ReturnUrl"] = cli.DepositCallbackURL
 
 	// 2. 先计算一个md5签名, 随后补充到AdditionalData字段中.
-	signDataMap["AdditionalData"], _ = utils.SignCallback(signDataMap, cli.RSAPublicKey)
+	signDataMap["AdditionalData"], _ = utils.SignCallback(signDataMap, cli.RSAPrivateKey)
 
 	// 2. 计算签名,补充参数
 	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.RSAPrivateKey, 1) //私钥加密
