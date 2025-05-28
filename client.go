@@ -7,32 +7,29 @@ import (
 
 type Client struct {
 	MerchantID    string // merchantId
+	TerminalID    string
 	RSAPublicKey  string // 公钥
 	RSAPrivateKey string // 私钥
 
-	DepositURL         string
-	DepositCallbackURL string
-
-	WithdrawURL         string
-	WithdrawCallbackURL string
+	CreatePaymentURL         string
+	VerifyPaymentURL         string
+	CreatePaymentCallbackURL string
 
 	ryClient *resty.Client
 	logger   utils.Logger
-	rsaUtil  utils.CheezeebitRSASignatureUtil
 }
 
-func NewClient(logger utils.Logger, merchantID string, rsaPublicKey, rsaPrivateKey, depositURL, withdrawURL, depositCallbackURL, withdrawCallbackURL string) *Client {
+func NewClient(logger utils.Logger, merchantID, terminalID string, rsaPublicKey, rsaPrivateKey, createPaymentURL, verifyPaymentURL, createPaymentCallbackURL string) *Client {
 	return &Client{
-		MerchantID:          merchantID,
-		RSAPublicKey:        rsaPublicKey,
-		RSAPrivateKey:       rsaPrivateKey,
-		DepositURL:          depositURL,
-		DepositCallbackURL:  depositCallbackURL,
-		WithdrawURL:         withdrawURL,
-		WithdrawCallbackURL: withdrawCallbackURL,
+		MerchantID:               merchantID,
+		TerminalID:               terminalID,
+		RSAPublicKey:             rsaPublicKey,
+		RSAPrivateKey:            rsaPrivateKey,
+		CreatePaymentURL:         createPaymentURL,
+		VerifyPaymentURL:         verifyPaymentURL,
+		CreatePaymentCallbackURL: createPaymentCallbackURL,
 
 		ryClient: resty.New(), //client实例
 		logger:   logger,
-		rsaUtil:  utils.CheezeebitRSASignatureUtil{},
 	}
 }
