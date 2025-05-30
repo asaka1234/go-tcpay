@@ -6,33 +6,16 @@ import (
 )
 
 type Client struct {
-	MerchantID    string // merchantId
-	TerminalID    string
-	RSAPublicKey  string // 公钥(貌似没用到)
-	RSAPrivateKey string // 私钥
-
-	GatewayURL          string //带token跳转地址
-	CreatePaymentURL    string
-	VerifyPaymentURL    string
-	DepositCallbackURL  string
-	WithdrawCallbackURL string
+	Params TCPayInitParams
 
 	ryClient *resty.Client
 	logger   utils.Logger
 	signUtil utils.TCPayRSASignatureUtil
 }
 
-func NewClient(logger utils.Logger, merchantID, terminalID string, rsaPublicKey, rsaPrivateKey, gatewayURL, createPaymentURL, verifyPaymentURL, depositCallbackURL, withdrawCallbackURL string) *Client {
+func NewClient(logger utils.Logger, params TCPayInitParams) *Client {
 	return &Client{
-		MerchantID:          merchantID,
-		TerminalID:          terminalID,
-		RSAPublicKey:        rsaPublicKey,
-		RSAPrivateKey:       rsaPrivateKey,
-		GatewayURL:          gatewayURL,
-		CreatePaymentURL:    createPaymentURL,
-		VerifyPaymentURL:    verifyPaymentURL,
-		DepositCallbackURL:  depositCallbackURL,
-		WithdrawCallbackURL: withdrawCallbackURL,
+		Params: params,
 
 		ryClient: resty.New(), //client实例
 		logger:   logger,

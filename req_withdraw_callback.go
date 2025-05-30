@@ -13,12 +13,12 @@ func (cli *Client) WithdrawCallback(req TCPayCreatePaymentBackReq, processor fun
 		var signDataMap map[string]interface{}
 		mapstructure.Decode(req.Data, &signDataMap)
 
-		verifyResult, err := utils.VerifyCallback(signDataMap, cli.RSAPrivateKey)
+		verifyResult, err := utils.VerifyCallback(signDataMap, cli.Params.RSAPrivateKey)
 		if err != nil || !verifyResult {
 			return fmt.Errorf("illegal callback!")
 		}
 
-		if cast.ToString(req.Data.MerchantId) != cli.MerchantID || cast.ToString(req.Data.TerminalId) != cli.TerminalID {
+		if cast.ToString(req.Data.MerchantId) != cli.Params.MerchantId || cast.ToString(req.Data.TerminalId) != cli.Params.TerminalId {
 			return fmt.Errorf("illegal merchantID!")
 		}
 

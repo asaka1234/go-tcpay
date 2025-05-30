@@ -14,12 +14,12 @@ func (cli *Client) DepositCallback(req TCPayCreatePaymentBackReq, processor func
 		var signDataMap map[string]interface{}
 		mapstructure.Decode(req.Data, &signDataMap)
 
-		verifyResult, err := utils.VerifyCallback(signDataMap, cli.RSAPrivateKey)
+		verifyResult, err := utils.VerifyCallback(signDataMap, cli.Params.RSAPrivateKey)
 		if err != nil || !verifyResult {
 			return fmt.Errorf("illegal callback!")
 		}
 
-		if cast.ToString(req.Data.MerchantId) != cli.MerchantID || cast.ToString(req.Data.TerminalId) != cli.TerminalID {
+		if cast.ToString(req.Data.MerchantId) != cli.Params.MerchantId || cast.ToString(req.Data.TerminalId) != cli.Params.TerminalId {
 			return fmt.Errorf("illegal merchantID!")
 		}
 
@@ -47,7 +47,7 @@ func (cli *Client) VerifyPayment(req TCPayVerifyPaymentReq) error {
 	var signDataMap map[string]interface{}
 	mapstructure.Decode(req, &signDataMap)
 
-	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.RSAPrivateKey, 2) //私钥加密
+	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.Params.RSAPrivateKey, 2) //私钥加密
 	signDataMap["SignData"] = signStr
 
 	//---------------------------------
@@ -61,7 +61,7 @@ func (cli *Client) VerifyPayment(req TCPayVerifyPaymentReq) error {
 		SetHeaders(getHeaders()).
 		SetResult(&result).
 		SetError(&result).
-		Post(cli.VerifyPaymentURL)
+		Post(cli.Params.VerifyPaymentUrl)
 
 	fmt.Printf("verify result: %s, %+v\n", string(resp.Body()), result)
 
