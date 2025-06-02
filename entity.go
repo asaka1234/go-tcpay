@@ -3,16 +3,16 @@ package go_tcpay
 import "time"
 
 type TCPayInitParams struct {
-	MerchantId    string `json:"merchantId" mapstructure:"merchantId" config:"merchantId"` // merchantId
-	TerminalId    string `json:"terminalId" mapstructure:"terminalId" config:"terminalId"`
-	RSAPublicKey  string `json:"rsaPublicKey" mapstructure:"rsaPublicKey" config:"rsaPublicKey"`    // 公钥(貌似没用到)
-	RSAPrivateKey string `json:"rsaPrivateKey" mapstructure:"rsaPrivateKey" config:"rsaPrivateKey"` // 私钥
+	MerchantId    string `json:"merchantId" mapstructure:"merchantId" config:"merchantId" yaml:"merchantId"` // merchantId
+	TerminalId    string `json:"terminalId" mapstructure:"terminalId" config:"terminalId" yaml:"terminalId"`
+	RSAPublicKey  string `json:"rsaPublicKey" mapstructure:"rsaPublicKey" config:"rsaPublicKey" yaml:"rsaPublicKey"`     // 公钥(貌似没用到)
+	RSAPrivateKey string `json:"rsaPrivateKey" mapstructure:"rsaPrivateKey" config:"rsaPrivateKey" yaml:"rsaPrivateKey"` // 私钥
 
-	GatewayUrl          string `json:"gatewayUrl" mapstructure:"gatewayUrl" config:"gatewayUrl"` //带token跳转地址
-	CreatePaymentUrl    string `json:"createPaymentUrl" mapstructure:"createPaymentUrl" config:"createPaymentUrl"`
-	VerifyPaymentUrl    string `json:"verifyPaymentUrl" mapstructure:"verifyPaymentUrl" config:"verifyPaymentUrl"`
-	DepositCallbackUrl  string `json:"depositCallbackUrl" mapstructure:"depositCallbackUrl" config:"depositCallbackUrl"`
-	WithdrawCallbackUrl string `json:"withdrawCallbackUrl" mapstructure:"withdrawCallbackUrl" config:"withdrawCallbackUrl"`
+	GatewayUrl          string `json:"gatewayUrl" mapstructure:"gatewayUrl" config:"gatewayUrl" yaml:"gatewayUrl"` //带token跳转地址
+	CreatePaymentUrl    string `json:"createPaymentUrl" mapstructure:"createPaymentUrl" config:"createPaymentUrl" yaml:"createPaymentUrl"`
+	VerifyPaymentUrl    string `json:"verifyPaymentUrl" mapstructure:"verifyPaymentUrl" config:"verifyPaymentUrl" yaml:"verifyPaymentUrl"`
+	DepositCallbackUrl  string `json:"depositCallbackUrl" mapstructure:"depositCallbackUrl" config:"depositCallbackUrl" yaml:"depositCallbackUrl"`
+	WithdrawCallbackUrl string `json:"withdrawCallbackUrl" mapstructure:"withdrawCallbackUrl" config:"withdrawCallbackUrl" yaml:"withdrawCallbackUrl"`
 }
 
 // ---------------------------------------------
