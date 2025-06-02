@@ -18,7 +18,7 @@ func (cli *Client) Withdraw(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespo
 	signDataMap["TerminalId"] = cli.Params.TerminalId
 	signDataMap["LocalDateTime"] = time.Now().Format("2006/01/02 15:04:05")
 	signDataMap["Action"] = 100 //100-withdraw
-	signDataMap["ReturnUrl"] = cli.Params.WithdrawCallbackUrl
+	signDataMap["ReturnUrl"] = cli.Params.WithdrawBackUrl
 
 	// 2. 先计算一个md5签名, 随后补充到AdditionalData字段中.
 	signDataMap["AdditionalData"], _ = utils.SignCallback(signDataMap, cli.Params.RSAPrivateKey)

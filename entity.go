@@ -8,11 +8,11 @@ type TCPayInitParams struct {
 	RSAPublicKey  string `json:"rsaPublicKey" mapstructure:"rsaPublicKey" config:"rsaPublicKey" yaml:"rsaPublicKey"`     // 公钥(貌似没用到)
 	RSAPrivateKey string `json:"rsaPrivateKey" mapstructure:"rsaPrivateKey" config:"rsaPrivateKey" yaml:"rsaPrivateKey"` // 私钥
 
-	GatewayUrl          string `json:"gatewayUrl" mapstructure:"gatewayUrl" config:"gatewayUrl" yaml:"gatewayUrl"` //带token跳转地址
-	CreatePaymentUrl    string `json:"createPaymentUrl" mapstructure:"createPaymentUrl" config:"createPaymentUrl" yaml:"createPaymentUrl"`
-	VerifyPaymentUrl    string `json:"verifyPaymentUrl" mapstructure:"verifyPaymentUrl" config:"verifyPaymentUrl" yaml:"verifyPaymentUrl"`
-	DepositCallbackUrl  string `json:"depositCallbackUrl" mapstructure:"depositCallbackUrl" config:"depositCallbackUrl" yaml:"depositCallbackUrl"`
-	WithdrawCallbackUrl string `json:"withdrawCallbackUrl" mapstructure:"withdrawCallbackUrl" config:"withdrawCallbackUrl" yaml:"withdrawCallbackUrl"`
+	GatewayUrl       string `json:"gatewayUrl" mapstructure:"gatewayUrl" config:"gatewayUrl" yaml:"gatewayUrl"` //带token跳转地址
+	CreatePaymentUrl string `json:"createPaymentUrl" mapstructure:"createPaymentUrl" config:"createPaymentUrl" yaml:"createPaymentUrl"`
+	VerifyPaymentUrl string `json:"verifyPaymentUrl" mapstructure:"verifyPaymentUrl" config:"verifyPaymentUrl" yaml:"verifyPaymentUrl"`
+	DepositBackUrl   string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl" yaml:"depositBackUrl"`
+	WithdrawBackUrl  string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl" yaml:"withdrawBackUrl"`
 }
 
 // ---------------------------------------------
