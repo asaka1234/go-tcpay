@@ -6,7 +6,7 @@ import (
 )
 
 type Client struct {
-	Params TCPayInitParams
+	Params *TCPayInitParams
 
 	ryClient  *resty.Client
 	logger    utils.Logger
@@ -14,7 +14,7 @@ type Client struct {
 	signUtil  utils.TCPayRSASignatureUtil
 }
 
-func NewClient(logger utils.Logger, params TCPayInitParams) *Client {
+func NewClient(logger utils.Logger, params *TCPayInitParams) *Client {
 	return &Client{
 		Params: params,
 
