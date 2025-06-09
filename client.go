@@ -8,17 +8,23 @@ import (
 type Client struct {
 	Params TCPayInitParams
 
-	ryClient *resty.Client
-	logger   utils.Logger
-	signUtil utils.TCPayRSASignatureUtil
+	ryClient  *resty.Client
+	logger    utils.Logger
+	debugMode bool
+	signUtil  utils.TCPayRSASignatureUtil
 }
 
 func NewClient(logger utils.Logger, params TCPayInitParams) *Client {
 	return &Client{
 		Params: params,
 
-		ryClient: resty.New(), //client实例
-		logger:   logger,
-		signUtil: utils.TCPayRSASignatureUtil{},
+		ryClient:  resty.New(), //client实例
+		logger:    logger,
+		debugMode: false,
+		signUtil:  utils.TCPayRSASignatureUtil{},
 	}
+}
+
+func (cli *Client) SetDebugModel(debugModel bool) {
+	cli.debugMode = debugModel
 }

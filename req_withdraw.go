@@ -34,6 +34,7 @@ func (cli *Client) Withdraw(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespo
 		R().
 		SetBody(signDataMap).
 		SetHeaders(getHeaders()).
+		SetDebug(cli.debugMode).
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)

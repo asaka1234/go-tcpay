@@ -40,6 +40,7 @@ func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespon
 		R().
 		SetBody(signDataMap).
 		SetHeaders(getHeaders()).
+		SetDebug(cli.debugMode).
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)

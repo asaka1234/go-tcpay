@@ -59,6 +59,7 @@ func (cli *Client) VerifyPayment(req TCPayVerifyPaymentReq) error {
 		R().
 		SetBody(signDataMap).
 		SetHeaders(getHeaders()).
+		SetDebug(cli.debugMode).
 		SetResult(&result).
 		SetError(&result).
 		Post(cli.Params.VerifyPaymentUrl)
