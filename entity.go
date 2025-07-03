@@ -58,7 +58,7 @@ type TCPayCreatePaymentBackReqData struct {
 	Amount         float64 `json:"Amount" mapstructure:"Amount"`
 	Action         int64   `json:"Action" mapstructure:"Action"`               // 50-deposit, 100-withdrawl
 	InvoiceNumber  int64   `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
-	// TransactionId  int64   `json:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
+	//TransactionId  int64   `json:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
 	Token          string  `json:"Token" mapstructure:"token"`
 	AdditionalData string  `json:"AdditionalData,omitempty" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
 }
