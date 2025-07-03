@@ -47,20 +47,20 @@ type TCPayCreatePaymentResponseData struct {
 
 // POST
 type TCPayCreatePaymentBackReq struct {
-	ResCode     int                            `json:"resCode" mapstructure:"ResCode"` //0是成功
-	Description string                         `json:"description" mapstructure:"Description"`
+	ResCode     int                            `form:"resCode" json:"resCode" mapstructure:"ResCode"` //0是成功
+	Description string                         `form:"description" json:"description" mapstructure:"Description"`
 	Data        *TCPayCreatePaymentBackReqData `json:"data,omitempty" mapstructure:"Data"`
 }
 
 type TCPayCreatePaymentBackReqData struct {
-	MerchantId     int64   `json:"MerchantId" mapstructure:"MerchantId"`
-	TerminalId     int64   `json:"TerminalId" mapstructure:"TerminalId"`
-	Amount         float64 `json:"Amount" mapstructure:"Amount"`
-	Action         int64   `json:"Action" mapstructure:"Action"`               // 50-deposit, 100-withdrawl
-	InvoiceNumber  int64   `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
-	//TransactionId  int64   `json:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
-	Token          string  `json:"Token" mapstructure:"token"`
-	AdditionalData string  `json:"AdditionalData,omitempty" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
+	MerchantId     int64   `form:"data.MerchantId" json:"MerchantId" mapstructure:"MerchantId"`
+	TerminalId     int64   `form:"data.TerminalId" json:"TerminalId" mapstructure:"TerminalId"`
+	Amount         float64 `form:"data.Amount" json:"Amount" mapstructure:"Amount"`
+	Action         int64   `form:"data.Action" json:"Action" mapstructure:"Action"`               // 50-deposit, 100-withdrawl
+	InvoiceNumber  int64   `form:"data.InvoiceNumber" json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
+	//TransactionId  int64   `json:"data.TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
+	Token          string  `form:"data.Token" json:"Token" mapstructure:"token"`
+	AdditionalData string  `form:"data.AdditionalData" json:"AdditionalData,omitempty" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
 }
 
 //=====================最终确认=========================
