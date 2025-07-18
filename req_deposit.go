@@ -45,7 +45,7 @@ func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespon
 		Post(rawURL)
 
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
-	cli.logger.Infof("PSPResty#tcpay#deposit->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#tcpay#deposit->%s", string(restLog))
 
 	if err != nil {
 		return nil, err

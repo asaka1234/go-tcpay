@@ -42,7 +42,7 @@ func (cli *Client) Withdraw(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespo
 		Post(rawURL)
 
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
-	cli.logger.Infof("PSPResty#tcpay#withdraw->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#tcpay#withdraw->%s", string(restLog))
 
 	if err != nil {
 		return nil, err
