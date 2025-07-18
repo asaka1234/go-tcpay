@@ -31,17 +31,17 @@ func (util *TCPayRSASignatureUtil) GetSign(paramsMap map[string]interface{}, pri
 		textContent = util.GetVerifyPaymentContent(paramsMap)
 	}
 
-	fmt.Printf("=1=>raw: %s\n", textContent)
+	//fmt.Printf("=1=>raw: %s\n", textContent)
 
 	//2. 做sha256 hash
 	sha256Data := util.ToSHA256(textContent)
 
-	fmt.Printf("=2=>sha256: %s\n", sha256Data)
+	//fmt.Printf("=2=>sha256: %s\n", sha256Data)
 
 	//3. 用私钥签名
 	signStr, err := util.SignData(2048, privateKeyXML, sha256Data)
 
-	fmt.Printf("=3=>sign: %s\n", signStr)
+	//fmt.Printf("=3=>sign: %s\n", signStr)
 
 	return signStr, err
 

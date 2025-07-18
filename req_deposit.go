@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/asaka1234/go-tcpay/utils"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
 	"time"
 )
@@ -31,8 +32,6 @@ func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespon
 	}
 	signDataMap["SignData"] = signStr
 
-	fmt.Printf("sign: %s\n", signStr)
-
 	var result TCPayCreatePaymentResponse
 
 	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
@@ -45,10 +44,21 @@ func (cli *Client) Deposit(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespon
 		SetError(&result).
 		Post(rawURL)
 
-	fmt.Printf("result: %s\n", string(resp.Body()))
+	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
+	cli.logger.Infof("PSPResty#tcpay#deposit->%+v", string(restLog))
 
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode() != 200 {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("status code: %d", resp.StatusCode())
+	}
+
+	if resp.Error() != nil {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("%v, body:%s", resp.Error(), resp.Body())
 	}
 
 	return &result, nil

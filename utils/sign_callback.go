@@ -34,7 +34,7 @@ func SignCallback(params map[string]interface{}, key string) (string, error) {
 	signResult := hex.EncodeToString(hash[:])
 
 	// Debug print (optional)
-	fmt.Printf("验签str: %s\n结果: %s\n", signStr, signResult)
+	//fmt.Printf("验签str: %s\n结果: %s\n", signStr, signResult)
 
 	return signResult, nil
 }
