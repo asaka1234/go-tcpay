@@ -59,14 +59,14 @@ type TCPayCreatePaymentErrorBackReq struct {
 }
 
 type TCPayCreatePaymentBackReqData struct {
-	MerchantId     string `json:"MerchantId" form:"MerchantId" mapstructure:"MerchantId"`
-	TerminalId     string `json:"TerminalId" form:"TerminalId" mapstructure:"TerminalId"`
-	Amount         string `json:"Amount" form:"Amount" mapstructure:"Amount"`
-	Action         string `json:"Action" form:"Action" mapstructure:"Action"`                      // 50-deposit, 100-withdrawl
-	InvoiceNumber  string `json:"InvoiceNumber" form:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
-	TransactionId  string `json:"TransactionId" form:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
-	Token          string `json:"Token" form:"Token" mapstructure:"Token"`
-	AdditionalData string `json:"AdditionalData,omitempty" form:"AdditionalData" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
+	MerchantId     string `json:"MerchantId" form:"data.MerchantId" mapstructure:"MerchantId"` //嵌套
+	TerminalId     string `json:"TerminalId" form:"data.TerminalId" mapstructure:"TerminalId"`
+	Amount         string `json:"Amount" form:"data.Amount" mapstructure:"Amount"`
+	Action         string `json:"Action" form:"data.Action" mapstructure:"Action"`                      // 50-deposit, 100-withdrawl
+	InvoiceNumber  string `json:"InvoiceNumber" form:"data.InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
+	TransactionId  string `json:"TransactionId" form:"data.TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
+	Token          string `json:"Token" form:"data.Token" mapstructure:"Token"`
+	AdditionalData string `json:"AdditionalData,omitempty" form:"data.AdditionalData" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
 }
 
 //=====================最终确认=========================
