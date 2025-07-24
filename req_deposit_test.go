@@ -28,6 +28,7 @@ func TestDeposit(t *testing.T) {
 	cli := NewClient(vLog, &TCPayInitParams{MERCHANT_ID, TERMINAL_ID, RSA_PRIVATE_KEY, RSA_PRIVATE_KEY, GARTWAY_URL, CREATE_PAYMENT_URL, VERIFY_PAYMENT_URL, DEPOSIT_CALLBACK_URL, WITHDRAW_CALLBACK_URL})
 
 	//发请求
+	cli.SetDebugModel(true)
 	resp, err := cli.Deposit(GenDepositRequestDemo())
 	if err != nil {
 		fmt.Printf("err:%s\n", err.Error())
@@ -38,8 +39,8 @@ func TestDeposit(t *testing.T) {
 
 func GenDepositRequestDemo() TCPayCreatePaymentReq {
 	return TCPayCreatePaymentReq{
-		ConsumerId:    "12345", //商户uid
-		InvoiceNumber: 8787791,
-		Amount:        "200.00", //不能浮点数
+		ConsumerId:    "128401", //商户uid
+		InvoiceNumber: 202507440923,
+		Amount:        "20", //不能浮点数
 	}
 }
