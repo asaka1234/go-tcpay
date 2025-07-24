@@ -46,21 +46,22 @@ type TCPayCreatePaymentResponseData struct {
 //--------------callback------------------------------
 
 // POST
+// multipart/form-data
 type TCPayCreatePaymentBackReq struct {
-	ResCode     int                            `json:"ResCode" mapstructure:"ResCode"` //0是成功
-	Description string                         `json:"Description" mapstructure:"Description"`
+	ResCode     int                            `json:"resCode" mapstructure:"resCode"` //0是成功
+	Description string                         `json:"description" mapstructure:"description"`
 	Data        *TCPayCreatePaymentBackReqData `json:"Data,omitempty" mapstructure:"Data"`
 }
 
 type TCPayCreatePaymentBackReqData struct {
-	MerchantId     int64   `json:"MerchantId" mapstructure:"MerchantId"`
-	TerminalId     int64   `json:"TerminalId" mapstructure:"TerminalId"`
-	Amount         float64 `json:"Amount" mapstructure:"Amount"`
-	Action         int64   `json:"Action" mapstructure:"Action"`               // 50-deposit, 100-withdrawl
-	InvoiceNumber  int64   `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
-	TransactionId  int64   `json:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
-	Token          string  `json:"token" mapstructure:"token"`
-	AdditionalData string  `json:"AdditionalData,omitempty" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
+	MerchantId     string `json:"MerchantId" mapstructure:"MerchantId"`
+	TerminalId     string `json:"TerminalId" mapstructure:"TerminalId"`
+	Amount         string `json:"Amount" mapstructure:"Amount"`
+	Action         string `json:"Action" mapstructure:"Action"`               // 50-deposit, 100-withdrawl
+	InvoiceNumber  string `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
+	TransactionId  string `json:"TransactionId" mapstructure:"TransactionId"` //TODO 这个字段文档中没有,要确认下
+	Token          string `json:"token" mapstructure:"token"`
+	AdditionalData string `json:"AdditionalData,omitempty" mapstructure:"AdditionalData"` //我觉得这里最好还是要用来做一下sign签名,不然还是很容易被伪造得
 }
 
 //=====================最终确认=========================

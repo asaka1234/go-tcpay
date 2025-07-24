@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cast"
 )
 
+// multipart/form-data
 func (cli *Client) DepositCallback(req TCPayCreatePaymentBackReq, processor func(TCPayCreatePaymentBackReq) error) error {
 	//1. 验证签名
 	if req.ResCode == 0 {
@@ -24,7 +25,7 @@ func (cli *Client) DepositCallback(req TCPayCreatePaymentBackReq, processor func
 			return fmt.Errorf("illegal merchantId")
 		}
 
-		if req.Data.Action != 50 {
+		if req.Data.Action != "50" {
 			return fmt.Errorf("illegal action")
 		}
 

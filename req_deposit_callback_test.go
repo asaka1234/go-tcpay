@@ -27,12 +27,12 @@ func GenDepositCallbackRequestDemo() TCPayCreatePaymentBackReq {
 		ResCode:     0, //商户uid
 		Description: "Success",
 		Data: &TCPayCreatePaymentBackReqData{
-			Action:         50,
+			Action:         "50",
 			AdditionalData: "8df3d80cabd794c3f658b3afe0dd934a",
-			Amount:         57.00,
-			InvoiceNumber:  202507230915400460,
-			MerchantId:     200157,
-			TerminalId:     300384,
+			Amount:         "57.00",
+			InvoiceNumber:  "202507230915400460",
+			MerchantId:     "200157",
+			TerminalId:     "300384",
 			Token:          "ui1nwl4uxn14STbXF71Pbe2RmrXPedR2PxfrVWh4kZc",
 		}, //不能浮点数
 	}
