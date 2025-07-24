@@ -13,19 +13,21 @@ import (
 func (cli *Client) DepositCallback(req TCPayCreatePaymentBackReq, processor func(TCPayCreatePaymentBackReq) error) error {
 	//1. 验证签名
 	if req.ResCode == 0 {
-		signDataMap := map[string]interface{}{
-			"MerchantId":     req.Data.MerchantId,
-			"TerminalId":     req.Data.TerminalId,
-			"Action":         req.Data.Action,
-			"Amount":         req.Data.Amount,
-			"InvoiceNumber":  req.Data.InvoiceNumber,
-			"AdditionalData": req.Data.AdditionalData,
-		}
+		/*
+			signDataMap := map[string]interface{}{
+				"MerchantId":     req.Data.MerchantId,
+				"TerminalId":     req.Data.TerminalId,
+				"Action":         req.Data.Action,
+				"Amount":         req.Data.Amount,
+				"InvoiceNumber":  req.Data.InvoiceNumber,
+				"AdditionalData": req.Data.AdditionalData,
+			}
 
-		verifyResult, err := utils.VerifyCallback(signDataMap, cli.Params.RSAPrivateKey)
-		if err != nil || !verifyResult {
-			return fmt.Errorf("verify signature failed")
-		}
+			verifyResult, err := utils.VerifyCallback(signDataMap, cli.Params.RSAPrivateKey)
+			if err != nil || !verifyResult {
+				return fmt.Errorf("verify signature failed")
+			}
+		*/
 
 		if cast.ToString(req.Data.MerchantId) != cli.Params.MerchantId || cast.ToString(req.Data.TerminalId) != cli.Params.TerminalId {
 			return fmt.Errorf("illegal merchantId")
@@ -36,7 +38,7 @@ func (cli *Client) DepositCallback(req TCPayCreatePaymentBackReq, processor func
 		}
 
 		//2. 业务侧开始处理
-		err = processor(req)
+		err := processor(req)
 		if err != nil {
 			return err
 		}
