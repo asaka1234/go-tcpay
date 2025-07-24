@@ -18,9 +18,9 @@ type TCPayInitParams struct {
 // ---------------------------------------------
 // create payment
 type TCPayCreatePaymentReq struct {
-	ConsumerId    string  `json:"ConsumerId,omitempty" mapstructure:"ConsumerId"`
-	Amount        float64 `json:"Amount" mapstructure:"Amount"`               // 要求:必须2位精度!! 哪怕是整数,也要1.00这样
-	InvoiceNumber int64   `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
+	ConsumerId    string `json:"ConsumerId,omitempty" mapstructure:"ConsumerId"`
+	Amount        string `json:"Amount" mapstructure:"Amount"`               // 要求:必须2位精度!! 哪怕是整数,也要1.00这样
+	InvoiceNumber int64  `json:"InvoiceNumber" mapstructure:"InvoiceNumber"` //商户订单号
 	//以下sdk来设置
 	//MerchantId    int    `json:"MerchantId" mapstructure:"MerchantId"`       //商户号
 	//TerminalId    int    `json:"TerminalId" mapstructure:"TerminalId"`       //终端号
@@ -73,11 +73,12 @@ type TCPayVerifyPaymentReq struct {
 }
 
 type TCPayVerifyPaymentResp struct {
-	ResCode     int                         `json:"ResCode" mapstructure:"ResCode"` //0是成功
-	Description string                      `json:"Description" mapstructure:"Description"`
-	Data        *TCPayVerifyPaymentRespData `json:"Data,omitempty" mapstructure:"Data"`
+	ResCode     int         `json:"ResCode" mapstructure:"ResCode"` //0是成功
+	Description string      `json:"Description" mapstructure:"Description"`
+	Data        interface{} `json:"Data,omitempty" mapstructure:"Data"`
 }
 
+// 错误的时候:是slice.  正确的时候是如下信息(但是这个data数据无关紧要,所以先不处理了)
 type TCPayVerifyPaymentRespData struct {
 	MerchantId    int64   `json:"MerchantId" mapstructure:"MerchantId"`
 	TerminalId    int64   `json:"TerminalId" mapstructure:"TerminalId"`

@@ -55,6 +55,7 @@ func VerifyCallback(params map[string]interface{}, signKey string) (bool, error)
 		return false, fmt.Errorf("signature generation failed: %w", err)
 	}
 
+	fmt.Printf("====>%s-----%s\n", signature.(string), currentSignature)
 	// Compare signatures
 	return signature.(string) == currentSignature, nil
 }

@@ -6,6 +6,8 @@ import (
 	"github.com/asaka1234/go-tcpay/utils"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
+	"github.com/shopspring/decimal"
+	"github.com/spf13/cast"
 	"time"
 )
 
@@ -21,6 +23,10 @@ func (cli *Client) Withdraw(req TCPayCreatePaymentReq) (*TCPayCreatePaymentRespo
 	signDataMap["LocalDateTime"] = time.Now().Format("2006/01/02 15:04:05")
 	signDataMap["Action"] = 100 //100-withdraw
 	signDataMap["ReturnUrl"] = cli.Params.WithdrawBackUrl
+
+	//以此确保amount是2位精度!
+	amount := decimal.NewFromFloat(cast.ToFloat64(signDataMap["Amount"])) //转为decimal
+	signDataMap["Amount"] = amount.StringFixed(2)
 
 	// 2. 先计算一个md5签名, 随后补充到AdditionalData字段中.
 	signDataMap["AdditionalData"], _ = utils.SignCallback(signDataMap, cli.Params.RSAPrivateKey)

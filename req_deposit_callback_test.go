@@ -12,7 +12,7 @@ func TestDepositCallback(t *testing.T) {
 	cli := NewClient(vLog, &TCPayInitParams{MERCHANT_ID, TERMINAL_ID, RSA_PRIVATE_KEY, RSA_PRIVATE_KEY, GARTWAY_URL, CREATE_PAYMENT_URL, VERIFY_PAYMENT_URL, DEPOSIT_CALLBACK_URL, WITHDRAW_CALLBACK_URL})
 
 	//发请求
-	err := cli.DepositCallback(GenDepositCallbackRequestDemo2(), processor)
+	err := cli.DepositCallback(GenDepositCallbackRequestDemo(), processor)
 	if err != nil {
 		fmt.Printf("err:%s\n", err.Error())
 		return
@@ -22,18 +22,21 @@ func TestDepositCallback(t *testing.T) {
 // Origin=Website&resCode=0&description=Success&data.Action=50
 // data.AdditionalData=8df3d80cabd794c3f658b3afe0dd934a&data.Amount=57.00&data.InvoiceNumber=202507230915400460
 // data.MerchantId=200157&data.TerminalId=300384&data.Token=ui1nwl4uxn14STbXF71Pbe2RmrXPedR2PxfrVWh4kZc
+
+//{"MerchantId":"200157","TerminalId":"300384","Amount":"24.00","Action":"50","InvoiceNumber":"202507211626030579","TransactionId":"","token":"","AdditionalData":"25f5bed15931dbe97776edf4211f263a"}
+
 func GenDepositCallbackRequestDemo() TCPayCreatePaymentBackReq {
 	return TCPayCreatePaymentBackReq{
 		ResCode:     0, //商户uid
 		Description: "Success",
 		Data: &TCPayCreatePaymentBackReqData{
 			Action:         "50",
-			AdditionalData: "8df3d80cabd794c3f658b3afe0dd934a",
-			Amount:         "57.00",
-			InvoiceNumber:  "202507230915400460",
+			AdditionalData: "25f5bed15931dbe97776edf4211f263a",
+			Amount:         "24.00",
+			InvoiceNumber:  "202507211626030579",
 			MerchantId:     "200157",
 			TerminalId:     "300384",
-			Token:          "ui1nwl4uxn14STbXF71Pbe2RmrXPedR2PxfrVWh4kZc",
+			Token:          "",
 		}, //不能浮点数
 	}
 }

@@ -40,6 +40,6 @@ func GenDepositRequestDemo() TCPayCreatePaymentReq {
 	return TCPayCreatePaymentReq{
 		ConsumerId:    "12345", //商户uid
 		InvoiceNumber: 8787791,
-		Amount:        200.00, //不能浮点数
+		Amount:        "200.00", //不能浮点数
 	}
 }
