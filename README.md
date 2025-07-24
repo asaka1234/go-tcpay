@@ -23,4 +23,4 @@ api中可以指定回调地址, 所以是动态的
 Comment
 ===============
 1. 支持 deposit/withdraw
-2. 所有接口都是 application/json 格式的
+2. 请求三方是 application/json 格式，但是callback 是 www-urlencode或者form格式.
