@@ -46,7 +46,8 @@ type TCPayCreatePaymentResponseData struct {
 //--------------callback------------------------------
 
 // POST
-// multipart/form-data
+// multipart/form-data  或者 x-www-form-urlencoded , 所以必须要指定form标签
+// 其中data里的嵌套字段,指定时要格外注意
 type TCPayCreatePaymentBackReq struct {
 	ResCode     int                            `json:"resCode" form:"resCode"  mapstructure:"resCode"` //0是成功
 	Description string                         `json:"description" form:"description" mapstructure:"description"`
