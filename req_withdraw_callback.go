@@ -22,7 +22,7 @@ func (cli *Client) WithdrawCallback(req TCPayCreatePaymentBackReq, processor fun
 			return fmt.Errorf("illegal merchantID!")
 		}
 
-		if req.Data.Action != 100 {
+		if req.Data.Action != "100" {
 			return fmt.Errorf("illegal action!")
 		}
 	}

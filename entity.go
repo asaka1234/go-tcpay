@@ -50,7 +50,7 @@ type TCPayCreatePaymentResponseData struct {
 type TCPayCreatePaymentBackReq struct {
 	ResCode     int                            `json:"resCode" mapstructure:"resCode"` //0是成功
 	Description string                         `json:"description" mapstructure:"description"`
-	Data        *TCPayCreatePaymentBackReqData `json:"Data,omitempty" mapstructure:"Data"`
+	Data        *TCPayCreatePaymentBackReqData `json:"data,omitempty" mapstructure:"data"`
 }
 
 type TCPayCreatePaymentBackReqData struct {
