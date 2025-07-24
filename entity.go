@@ -53,6 +53,11 @@ type TCPayCreatePaymentBackReq struct {
 	Data        *TCPayCreatePaymentBackReqData `json:"data,omitempty" form:"data" mapstructure:"data"`
 }
 
+type TCPayCreatePaymentErrorBackReq struct {
+	ResCode     int    `json:"resCode" form:"resCode"  mapstructure:"resCode"` //0是成功
+	Description string `json:"description" form:"description" mapstructure:"description"`
+}
+
 type TCPayCreatePaymentBackReqData struct {
 	MerchantId     string `json:"MerchantId" form:"MerchantId" mapstructure:"MerchantId"`
 	TerminalId     string `json:"TerminalId" form:"TerminalId" mapstructure:"TerminalId"`
