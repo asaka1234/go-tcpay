@@ -18,6 +18,8 @@ type TCPayRSASignatureUtil struct{}
 
 // category = 1 是: 下单接口
 // category = 2 是: 验证接口
+// category = 3 是: 自动出金接口
+// category = 4 是: 确认用户账户接口
 func (util *TCPayRSASignatureUtil) GetSign(paramsMap map[string]interface{}, privateKeyXML string, category int) (string, error) {
 	delete(paramsMap, "SignData")
 
@@ -29,6 +31,12 @@ func (util *TCPayRSASignatureUtil) GetSign(paramsMap map[string]interface{}, pri
 	} else if category == 2 {
 		//验证接口
 		textContent = util.GetVerifyPaymentContent(paramsMap)
+	} else if category == 3 {
+		//验证接口
+		textContent = util.GetAutoWithdrawPaymentContent(paramsMap)
+	} else if category == 4 {
+		//确认用户账户接口
+		textContent = util.GetAccountInquiryContent(paramsMap)
 	}
 
 	//fmt.Printf("=1=>raw: %s\n", textContent)
@@ -87,6 +95,44 @@ func (util *TCPayRSASignatureUtil) GetCreatePaymentContent(paramsMap map[string]
 
 func (util *TCPayRSASignatureUtil) GetVerifyPaymentContent(paramsMap map[string]interface{}) string {
 	return cast.ToString(paramsMap["Token"])
+}
+
+func (util *TCPayRSASignatureUtil) GetAccountInquiryContent(paramsMap map[string]interface{}) string {
+
+	params := ConvertToStringMap(paramsMap)
+
+	var builder strings.Builder
+	builder.WriteString(params["MerchantId"])
+	builder.WriteString("#")
+	builder.WriteString(params["TerminalId"])
+	builder.WriteString("#")
+	builder.WriteString("#")
+	builder.WriteString(params["AccountNumber"])
+	queryString := builder.String()
+
+	return queryString
+}
+
+func (util *TCPayRSASignatureUtil) GetAutoWithdrawPaymentContent(paramsMap map[string]interface{}) string {
+
+	//MerchantId#TerminalId#AccountNumber#Amount#PaymentNumber#AdditionalData
+	params := ConvertToStringMap(paramsMap)
+
+	var builder strings.Builder
+	builder.WriteString(params["MerchantId"])
+	builder.WriteString("#")
+	builder.WriteString(params["TerminalId"])
+	builder.WriteString("#")
+	builder.WriteString(params["AccountNumber"])
+	builder.WriteString("#")
+	builder.WriteString(decimal.NewFromFloat(cast.ToFloat64(paramsMap["Amount"])).StringFixed(2))
+	builder.WriteString("#")
+	builder.WriteString(params["PaymentNumber"])
+	builder.WriteString("#")
+	builder.WriteString(params["AdditionalData"])
+	queryString := builder.String()
+
+	return queryString
 }
 
 func (util *TCPayRSASignatureUtil) ToSHA256(input string) string {

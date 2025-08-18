@@ -10,6 +10,8 @@ type TCPayInitParams struct {
 
 	GatewayUrl       string `json:"gatewayUrl" mapstructure:"gatewayUrl" config:"gatewayUrl" yaml:"gatewayUrl"` //带token跳转地址
 	CreatePaymentUrl string `json:"createPaymentUrl" mapstructure:"createPaymentUrl" config:"createPaymentUrl" yaml:"createPaymentUrl"`
+	WithdrawUrl      string `json:"withdrawUrl" mapstructure:"withdrawUrl" config:"withdrawUrl" yaml:"withdrawUrl"`
+
 	VerifyPaymentUrl string `json:"verifyPaymentUrl" mapstructure:"verifyPaymentUrl" config:"verifyPaymentUrl" yaml:"verifyPaymentUrl"`
 	DepositBackUrl   string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl" yaml:"depositBackUrl"`
 	WithdrawBackUrl  string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl" yaml:"withdrawBackUrl"`
@@ -28,6 +30,27 @@ type TCPayCreatePaymentReq struct {
 	//AdditionalData string  `json:"additionalData,omitempty" mapstructure:"additionalData"` //option  备注信息,用来做一个简单签名,解决callback没有鉴权的问题. Additional transaction information
 	//Action        int     `json:"Action" mapstructure:"Action"` // 50-deposit, 100-withdrawl
 	//ReturnUrl     string  `json:"ReturnUrl" mapstructure:"ReturnUrl"`         //是ajax callback地址
+	//SignData      string `json:"SignData" mapstructure:"SignData"`           //签名数据
+}
+
+// auto withdraw
+type TCPayAutoWithdrawPaymentReq struct {
+	Amount        string `json:"Amount" mapstructure:"Amount"`               // 要求:必须2位精度!! 哪怕是整数,也要1.00这样
+	AccountNumber string `json:"AccountNumber" mapstructure:"AccountNumber"` //客户在TcPay的用户名
+	PaymentNumber string `json:"PaymentNumber" mapstructure:"PaymentNumber"` //商户订单号
+	//以下sdk来设置
+	//MerchantId    int    `json:"MerchantId" mapstructure:"MerchantId"`       //商户号
+	//TerminalId    int    `json:"TerminalId" mapstructure:"TerminalId"`       //终端号
+	//AdditionalData string  `json:"additionalData,omitempty" mapstructure:"additionalData"` //option  备注信息,用来做一个简单签名,解决callback没有鉴权的问题. Additional transaction information
+	//SignData      string `json:"SignData" mapstructure:"SignData"`           //签名数据
+}
+
+// auto withdraw
+type TCPayAccountInquiryReq struct {
+	AccountNumber string `json:"AccountNumber" mapstructure:"AccountNumber"` //客户在TcPay的用户名
+	//以下sdk来设置
+	//MerchantId    int    `json:"MerchantId" mapstructure:"MerchantId"`       //商户号
+	//TerminalId    int    `json:"TerminalId" mapstructure:"TerminalId"`       //终端号
 	//SignData      string `json:"SignData" mapstructure:"SignData"`           //签名数据
 }
 
