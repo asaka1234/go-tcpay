@@ -8,9 +8,10 @@ type TCPayInitParams struct {
 	RSAPublicKey  string `json:"rsaPublicKey" mapstructure:"rsaPublicKey" config:"rsaPublicKey" yaml:"rsaPublicKey"`     // 公钥(貌似没用到)
 	RSAPrivateKey string `json:"rsaPrivateKey" mapstructure:"rsaPrivateKey" config:"rsaPrivateKey" yaml:"rsaPrivateKey"` // 私钥
 
-	GatewayUrl       string `json:"gatewayUrl" mapstructure:"gatewayUrl" config:"gatewayUrl" yaml:"gatewayUrl"` //带token跳转地址
-	CreatePaymentUrl string `json:"createPaymentUrl" mapstructure:"createPaymentUrl" config:"createPaymentUrl" yaml:"createPaymentUrl"`
-	WithdrawUrl      string `json:"withdrawUrl" mapstructure:"withdrawUrl" config:"withdrawUrl" yaml:"withdrawUrl"`
+	GatewayUrl            string `json:"gatewayUrl" mapstructure:"gatewayUrl" config:"gatewayUrl" yaml:"gatewayUrl"` //带token跳转地址
+	CreatePaymentUrl      string `json:"createPaymentUrl" mapstructure:"createPaymentUrl" config:"createPaymentUrl" yaml:"createPaymentUrl"`
+	WithdrawUrl           string `json:"withdrawUrl" mapstructure:"withdrawUrl" config:"withdrawUrl" yaml:"withdrawUrl"`
+	AutoWithdrawDetailUrl string `json:"autoWithdrawDetailUrl" mapstructure:"autoWithdrawDetailUrl" config:"autoWithdrawDetailUrl" yaml:"autoWithdrawDetailUrl"`
 
 	VerifyPaymentUrl string `json:"verifyPaymentUrl" mapstructure:"verifyPaymentUrl" config:"verifyPaymentUrl" yaml:"verifyPaymentUrl"`
 	DepositBackUrl   string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl" yaml:"depositBackUrl"`
@@ -64,6 +65,20 @@ type TCPayCreatePaymentResponse struct {
 
 type TCPayCreatePaymentResponseData struct {
 	Token string `json:"Token" mapstructure:"Token"`
+}
+
+type TCPayAutoWithdrawResponse struct {
+	ResCode     int                            `json:"ResCode" mapstructure:"ResCode"` //0是成功, >0是失败
+	Description string                         `json:"Description" mapstructure:"Description"`
+	Data        *TCPayAutoWithdrawResponseData `json:"Data,omitempty" mapstructure:"Data"`
+}
+
+type TCPayAutoWithdrawResponseData struct {
+	TransactionId int64   `json:"TransactionId" mapstructure:"TransactionId"`
+	Amount        float64 `json:"Amount" mapstructure:"Amount"`
+	Currency      string  `json:"Currency" mapstructure:"Currency"`
+	StatusText    string  `json:"StatusText" mapstructure:"StatusText"`
+	StatusCode    int     `json:"StatusCode" mapstructure:"StatusCode"`
 }
 
 //--------------callback------------------------------

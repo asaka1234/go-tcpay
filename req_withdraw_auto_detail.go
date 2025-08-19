@@ -9,9 +9,9 @@ import (
 	"github.com/spf13/cast"
 )
 
-func (cli *Client) AutoWithdrawDetail(req TCPayAutoWithdrawDetailReq) (*TCPayCreatePaymentResponse, error) {
+func (cli *Client) AutoWithdrawDetail(req TCPayAutoWithdrawDetailReq) (*TCPayAutoWithdrawResponse, error) {
 
-	rawURL := "https://pg.toppayment.net/api/v2/Settlement/Details" //cli.Params.AccountInquiryUrl
+	rawURL := cli.Params.AutoWithdrawDetailUrl
 
 	// 1. 拿到请求参数，转为map
 	var signDataMap map[string]interface{}
@@ -24,7 +24,7 @@ func (cli *Client) AutoWithdrawDetail(req TCPayAutoWithdrawDetailReq) (*TCPayCre
 	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.Params.RSAPrivateKey, 4) //私钥加密
 	signDataMap["SignData"] = signStr
 
-	var result TCPayCreatePaymentResponse
+	var result TCPayAutoWithdrawResponse
 
 	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
