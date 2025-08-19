@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cast"
 )
 
-func (cli *Client) AutoWithdraw(req TCPayAutoWithdrawPaymentReq) (*TCPayCreatePaymentResponse, error) {
+func (cli *Client) AutoWithdraw(req TCPayAutoWithdrawPaymentReq) (*TCPayAutoWithdrawResponse, error) {
 
 	rawURL := cli.Params.WithdrawUrl
 
@@ -34,7 +34,7 @@ func (cli *Client) AutoWithdraw(req TCPayAutoWithdrawPaymentReq) (*TCPayCreatePa
 	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.Params.RSAPrivateKey, 3) //私钥加密
 	signDataMap["SignData"] = signStr
 
-	var result TCPayCreatePaymentResponse
+	var result TCPayAutoWithdrawResponse
 
 	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
