@@ -1,0 +1,27 @@
+package go_tcpay
+
+var (
+	MERCHANT_ID           = "200157"
+	TERMINAL_ID           = "300384"
+	RSA_PUBLIC_KEY        = "<RSAKeyValue><Modulus>zNLruOPvLVMSckFZPJ4V3+dpoe1FDFjtrMVOoRQObIKAkeHpQYBmkV+OlsuaXNuUBkoNpEYj/ILpvZtJ3LAeaaitzEaNqci8AOCrQ9pId1VuC3HJoF5xiEvqkc85+swNIFSneQobuuD5xoOZSZKWHFkdY5sNF+QRw79DdIg0z8d398QPAlas2O2v0X55VuBMnwIkDIXG5Qb0spRS3nhajRU9gsjK2NtpgtpA5f1DXjMU6rTQCoevrJvshv7YudHha+jkdSsa5H8WoOWrdHJNpZQ5+X6Cg37gwQNVwqBtwr3DcwM63zRmCB7aaWppVN0iGryFvD5FlbZ0DK6FF9lChQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>"
+	RSA_PRIVATE_KEY       = "<RSAKeyValue><Modulus>zNLruOPvLVMSckFZPJ4V3+dpoe1FDFjtrMVOoRQObIKAkeHpQYBmkV+OlsuaXNuUBkoNpEYj/ILpvZtJ3LAeaaitzEaNqci8AOCrQ9pId1VuC3HJoF5xiEvqkc85+swNIFSneQobuuD5xoOZSZKWHFkdY5sNF+QRw79DdIg0z8d398QPAlas2O2v0X55VuBMnwIkDIXG5Qb0spRS3nhajRU9gsjK2NtpgtpA5f1DXjMU6rTQCoevrJvshv7YudHha+jkdSsa5H8WoOWrdHJNpZQ5+X6Cg37gwQNVwqBtwr3DcwM63zRmCB7aaWppVN0iGryFvD5FlbZ0DK6FF9lChQ==</Modulus><Exponent>AQAB</Exponent><P>2paL0EigZwrxyuPVVMm9HwcYlmXyXZ0QWMlGsF0o2VdfIl5fYH+tNfp7B82XfPRVJLpeLR+Uhyb/FRPgsGDFufy+/0ATHdnRi5MES91O6GZT5ums+5KkaLx7YjtuRYyJeppi8+HykWAdMHft+FmoS7DGaR+jeQpc871LjwOrbKM=</P><Q>7+FL+yc8YUlAO/grMEPQ1NLmNaiTsLru1hSgRAvZ3ICusHavBr78C/VlmR937HsoEaHAn4cUQWY23sV/xboyG3d8Xcly9zL3i/TxZUOxzNhENs4CoWShrMkR2R5899BrGcL185pmxLiw8PN789XyIjo3ltLiOAIN2DapzmnWnrc=</Q><DP>lZ+PPJc6FM6NC9BAarVc2yxETE6kRCgK1HuSA48BMyR3XlMy/h7nNZerN4AnPcURsv5PEJwZUxoCaS8eEh1ruw+ivZ3ieABtSxjrS/LE3JeOvvUdD2clWvwJiQgdR0YXpPCg40e6foBH+rFdFy5n4Me0SKj7gRLy5XShj9d3M/k=</DP><DQ>cU1eIRvQNjduIqU+aQavHccbu16Lm98/rliBtoJOfgs999WnKC2PSWq4eVHWyBkHvQREwlUAKT/JTQHGLzOaNUUDthzPs5kcObwRRP5rfdDsr2Iw9eBdSQqT5pSy/C4yWDGxEEXuop6F3Nl0w6BbRPVwiknDVicKOQTgwcFWARM=</DQ><InverseQ>dMQwjP2BpNK9N+hMKakVMrpk5yaApP30NATJcl67HkHk7g+jdtRRARuVhaQlh64RIDPi9JqyF9BS5YNiB2rHphhYr6Rqx/jCK0I0udbOUmqpB9Dhn7Oh9PUbOwY6jgfwARigFij1nUwhTKDHbwTsPGX1NG+9YVqKV5jaT6nIURg=</InverseQ><D>RVwzqOO/DdkwyPIqNuXNwInL8qK3nCvNKJGUQ+XX0JUM1tnqtFy33wi974C5IDLXWJ3hKrz52Lu4TZX1mD8nvV36pM9Lj7BDQgTS2mJj4c1TO5rnzV/OEHqsz32eQ7ivxUAFim6K32jqDHhqA0kZfjYLRryt3WZFQcVWIXMydx2Y2FX4t/SBFxW5bJCflejF2Ml+FaxwIYn9Szz+XMZe5VLCpFwW+JN9ZT8VFiXtg/GgkSZptXs5Rx+v65NUEDkEjnX8As7aQKcH4Lj7SyCPnGhJZVubzjU5VUR0QvsAjadoQ2zvWe2W4tKyIoml12VUQUrCYYIZArlVDjI9JWjtbQ==</D></RSAKeyValue>"
+	GARTWAY_URL           = "https://pg.toppayment.net/Merchant"
+	CREATE_PAYMENT_URL    = "https://pg.toppayment.net/api/v2/Request/PaymentRequest"
+	VERIFY_PAYMENT_URL    = ""
+	WITHDRAW_URL          = "https://pg.toppayment.net/api/v2/Settlement/checkout"
+	DEPOSIT_CALLBACK_URL  = ""
+	WITHDRAW_CALLBACK_URL = ""
+)
+
+//var (
+//	MERCHANT_ID           = "200102"
+//	TERMINAL_ID           = "300301"
+//	RSA_PUBLIC_KEY        = "<RSAKeyValue><Modulus>uPh4FcwUe6JXs5sQtNH+kkd3PNM5cBVu3XN/QdqpJm/jq8QN6sP3nSb9jgAUrXwQdrW5kLFZB1XbNRcfIyTd8WvSUraQwjymfeNm7RCKjFGfSqNnW3jhDYlkBDa2JlNDhctSUYmCR112zjp2uMmk5dCN5fN8BA930nbU8SOvOMbGhiL42mVuJuiee4+Ao7RVK5pPwtWFCYWfy4bKGHHDN9I+8+Pv23avR7BpPXWJ11Mpebnk59/sz3dIDG1+22OXBrZv+/Vvxeh3YUA24tq6lAwrdifIJ2F4dM19KjirkuPPg4XR8EwmqyqQrtNXTajmCbwAPmSOtOnSQzK9dNYZFQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>"
+//	RSA_PRIVATE_KEY       = "<RSAKeyValue><Modulus>uPh4FcwUe6JXs5sQtNH+kkd3PNM5cBVu3XN/QdqpJm/jq8QN6sP3nSb9jgAUrXwQdrW5kLFZB1XbNRcfIyTd8WvSUraQwjymfeNm7RCKjFGfSqNnW3jhDYlkBDa2JlNDhctSUYmCR112zjp2uMmk5dCN5fN8BA930nbU8SOvOMbGhiL42mVuJuiee4+Ao7RVK5pPwtWFCYWfy4bKGHHDN9I+8+Pv23avR7BpPXWJ11Mpebnk59/sz3dIDG1+22OXBrZv+/Vvxeh3YUA24tq6lAwrdifIJ2F4dM19KjirkuPPg4XR8EwmqyqQrtNXTajmCbwAPmSOtOnSQzK9dNYZFQ==</Modulus><Exponent>AQAB</Exponent><P>5FQGvzADp1HTWGyzFb/16E7VWa6+ouF1gR01RCQHRPLvtu4DXB/IDzMaus26IhNZmjlKHfCifmz3zvXMvPcdieEWT22ss9wE0so9scDqcv3r09nKLfq3U2v6ZsAxO/wnF1Dnszr4aCvOKyw7R0z+ka9Ftq/4Q927Jm4/zaovkI8=</P><Q>z2NBLkK4e5xNHzXlHH9w2hgjLICQF7cHXxe/zS6bavuQJ43DGP8Hh+srQvC0nJjKRytBr7ymfLh+B/wIrfLQumsL/WGqfD0oWw7u3xd5k4ad9oEIrwG51OAdV63rJkXTM6oZ5tLOGVd5xoJcCvssc0saPk3U59IXiGmhk1bphhs=</Q><DP>WzTheQ+x9e1ushzBsMd8cG7FNMzj4+aR7KCBPZXyvW0ZqoYLG4qqfL/aRpKVbrUyDrQh0jHkhwH6P1bakQVZbFFYeyQBX9tcpeMZn97DCGo8AOU3qQREpPM2FENjp2WDLAIqe+LrhZkyAvbpOwMbkZBlFaPXVSzGbISPwhTgaSs=</DP><DQ>o+iJepuHHUNCfPlmtChRND5Bhomx2NxyugiWMf+1HE/o9ioH2XivJhCLJ6QAy4fCz47zooaSex6BlaPv5DN2HvA+EKwhR4I6pAVga/gswZlyvYHsMA1IJ2ReLI8rvBsRutKlGBbih4rolykuwAsWbaUc/8MaE4Kr0MfTyRS3CqM=</DQ><InverseQ>149PYncq3tJs7YIXt2UFh0NXew8XsgwNuJSCfi6W1vXsdBPt/uKGzSTcenN/7V0LbU/pLi795bHTxPwz3mcO1DMc5xhIPXqdw+7OhqaruXQA8lW45Sc0lUS8vOsQ31YGZeKDQiRjPqn2KKRLVDH3U6YNrPhAxbiNnLNDXmbznHg=</InverseQ><D>W3TfS0fAyPCYFIITXJSIHqOfXT/DIpw2WOCGh3UqNYsVMxSZHP8QK2/f5po7nxu8uDVaLyTBNFNLM5DfIG1WH8yEDcmfAasjVxNdDNIk7wRckncA38WA4USRY1P59DEvLbQ+W3p2I/sehxF5Khzpn4fi4VPmect8H2AKIcDXHmayyfycQwD95HFyY8zDwexpKTglhwAakJEWycf7aDLfAl3svPc2fJjR5Yhs5j3hrtSN+4ryiVGg48Iavl97XOP5p68fRSxpp2pjDRlJ+9p9ZT297dmq/Wwc9kQGrtP9nDgaA7X8O9CAvJvcqi0C/pgi84k7NxCjMR0jsihkYgWOcQ==</D></RSAKeyValue>"
+//	GARTWAY_URL           = "https://sandbox.topayment.net/Merchant"
+//	CREATE_PAYMENT_URL    = "https://sandbox.topayment.net/api/v2/Request/PaymentRequest"
+//	VERIFY_PAYMENT_URL    = ""
+//	WITHDRAW_URL          = "https://sandbox.topayment.net/api/v2/Settlement/checkout"
+//	DEPOSIT_CALLBACK_URL  = ""
+//	WITHDRAW_CALLBACK_URL = ""
+//)

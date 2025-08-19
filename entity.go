@@ -46,8 +46,8 @@ type TCPayAutoWithdrawPaymentReq struct {
 }
 
 // auto withdraw
-type TCPayAccountInquiryReq struct {
-	AccountNumber string `json:"AccountNumber" mapstructure:"AccountNumber"` //客户在TcPay的用户名
+type TCPayAutoWithdrawDetailReq struct {
+	TransactionId int `json:"TransactionId" mapstructure:"TransactionId"` // 交易ID
 	//以下sdk来设置
 	//MerchantId    int    `json:"MerchantId" mapstructure:"MerchantId"`       //商户号
 	//TerminalId    int    `json:"TerminalId" mapstructure:"TerminalId"`       //终端号

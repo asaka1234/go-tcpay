@@ -9,16 +9,16 @@ import (
 	"github.com/spf13/cast"
 )
 
-func (cli *Client) AccountInquiry(req TCPayAccountInquiryReq) (*TCPayCreatePaymentResponse, error) {
+func (cli *Client) AutoWithdrawDetail(req TCPayAutoWithdrawDetailReq) (*TCPayCreatePaymentResponse, error) {
 
-	rawURL := "https://pg.toppayment.net/api/v2/Settlement/Accountinquiry" //cli.Params.AccountInquiryUrl
+	rawURL := "https://pg.toppayment.net/api/v2/Settlement/Details" //cli.Params.AccountInquiryUrl
 
 	// 1. 拿到请求参数，转为map
 	var signDataMap map[string]interface{}
 	mapstructure.Decode(req, &signDataMap)
 	signDataMap["MerchantId"] = cast.ToInt(cli.Params.MerchantId)
 	signDataMap["TerminalId"] = cast.ToInt(cli.Params.TerminalId)
-	signDataMap["AccountNumber"] = req.AccountNumber // 客户TcPay的用户名
+	signDataMap["TransactionId"] = req.TransactionId
 
 	// 2. 计算签名,补充参数
 	signStr, _ := cli.signUtil.GetSign(signDataMap, cli.Params.RSAPrivateKey, 4) //私钥加密
@@ -37,7 +37,7 @@ func (cli *Client) AccountInquiry(req TCPayAccountInquiryReq) (*TCPayCreatePayme
 		Post(rawURL)
 
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
-	cli.logger.Infof("PSPResty#tcpay#accountInquiry->%s", string(restLog))
+	cli.logger.Infof("PSPResty#tcpay#autoWithdrawDetail->%s", string(restLog))
 
 	if err != nil {
 		return nil, err
